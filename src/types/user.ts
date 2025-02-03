@@ -4,6 +4,7 @@ export interface UserDetails {
     email?: string;
     phone?: string;
     type?: string;
+    role?: string;
   }
   
 export interface UserState {
