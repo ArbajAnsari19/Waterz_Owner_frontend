@@ -8,8 +8,8 @@ interface CustomError {
 }
 
 export const apiClient: AxiosInstance = axios.create({
-  baseURL: 'https://waterz-backend.onrender.com', 
-  // baseURL: 'http://localhost:8000', // local server
+  // baseURL: 'https://waterz-backend.onrender.com', 
+  baseURL: 'http://localhost:8000', // local server
   timeout: 20000,
   withCredentials: true,
   headers: {

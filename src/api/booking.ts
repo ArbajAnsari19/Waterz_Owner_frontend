@@ -6,6 +6,8 @@ export interface OwnerBookingType {
     yachtId: string;
     bookingDate: string;
     status: string;
+    totalAmount: number;
+    createdAt: string;
     yacht?: {
       name: string;
       capacity: number;

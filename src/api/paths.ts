@@ -1,5 +1,5 @@
-const URL = "https://waterz-backend.onrender.com"; 
-// const URL = "http://localhost:8000"; //local server
+// const URL = "https://waterz-backend.onrender.com"; 
+const URL = "http://localhost:8000"; //local server
 const userBaseURL = URL + "/user";
 const customer = URL + "/customer";
 const owner = URL + "/owner";

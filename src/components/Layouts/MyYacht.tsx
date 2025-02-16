@@ -4,14 +4,11 @@ import styles from '../../styles/Layouts/YatchCard.module.css';
 
 interface YachtCardProps {
   name: string;
-  capacity: number;
-  startingPrice: string;
   imageUrl: string;
   yachtId: string; // Unique ID for the yacht
-  
 }
 
-const MyYacht: React.FC<YachtCardProps> = ({ name, capacity, startingPrice, imageUrl, yachtId }) => {
+const MyYacht: React.FC<YachtCardProps> = ({ name, imageUrl, yachtId }) => {
   const navigate = useNavigate();
   console.log("yachtId", yachtId);
   const handleBookNow = () => {
