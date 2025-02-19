@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Select, { SingleValue, MultiValue } from "react-select";
+import Select, { SingleValue } from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../../styles/Booking/BookingDetails.module.css";

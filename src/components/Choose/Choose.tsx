@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../../styles/Choose/Choose.module.css";
 import YachtCard from "../Layouts/YatchCard";
 import { useYachts } from "../../hooks/useYachts";
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Yacht } from "../../types/yachts";
 
 interface LocationState {
@@ -11,18 +11,13 @@ interface LocationState {
 const Choose: React.FC = () => {
     const location = useLocation();
     const state = location.state as LocationState;
-    const { yachts: hookYachts, loading } = useYachts();
+    const { yachts: hookYachts, error } = useYachts();
     
     console.log("state",state.yatches);
     // Use passed yachts if available, otherwise use hook data
     const yachtes = state?.yatches ?? hookYachts;
     // const yachtes = state?.yatches;
 
-    console.log("yachtes",yachtes);
-
-    if (!state?.yatches && loading) {
-      return <div>Loading...</div>;
-    }
 
     return (
         <div className={styles.comp_body}>
@@ -36,6 +31,7 @@ const Choose: React.FC = () => {
                 {yachtes?.map((yacht) => (
                     <YachtCard
                         key={yacht._id}
+                        // @ts-ignore
                         yacht={yacht}
                     />
                 ))}

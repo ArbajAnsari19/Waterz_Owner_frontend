@@ -31,7 +31,6 @@ const Booking: React.FC = () => {
     const dispatch = useAppDispatch();
     const [currentBookings, setCurrentBookings] = useState<BookingType[]>([]);
     const [previousBookings, setPreviousBookings] = useState<BookingType[]>([]);
-    const [, setIsLoading] = useState(true);
     const [myYachts, setMyYachts] = useState<Yacht[]>([]);
     const [, setError] = useState<string | null>(null);
     const [isTotalEarning, setIsTotalEarning] = useState(true);
@@ -81,8 +80,11 @@ const Booking: React.FC = () => {
     const fetchCurrentBookings = async () => {
         try {
             const response = await ownerBookingAPI.getCurrentBookings();
+            console.log("response", response)
             // @ts-ignore
             const currents =  response.ownerCurrentRides
+            console.log("current", currents)
+            console.log("isArray", Array.isArray(currents))
             if (!Array.isArray(currents)) return;
 
             const currentWithDetails = await Promise.all(
@@ -354,26 +356,47 @@ const Booking: React.FC = () => {
                     {(isTotalEarning ? earnings.allBookings : earnings.sevenDaysBookings).length === 0 ? (
                         <NoEarningsMessage />
                     ) : (
-                        <Swiper
-                            spaceBetween={10}
-                            slidesPerView={3.2}
-                            pagination={{ clickable: true }}
-                            style={{ padding: "20px 0", width: "100%" }}
-                        >
-                            {(isTotalEarning ? earnings.allBookings : earnings.sevenDaysBookings).map((booking) => (
-                                <SwiperSlide key={booking.id}>
-                                    <EarningCard
-                                        name={booking.yacht?.name || ''}
-                                        capacity={booking.totalAmount}
-                                        startingPrice={new Date(booking.createdAt).toLocaleDateString()}
-                                        imageUrl={booking.yacht?.images?.[0] || Y1}
-                                        yachtId={booking.yachtId}
-                                        isPrev={true}
-                                        isEarning={true}
-                                    />
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
+                    <Swiper
+                    spaceBetween={60}
+                    slidesPerView="auto"
+                    pagination={{ clickable: true }}
+                    style={{ 
+                      padding: "20px 0", 
+                      width: "100%",
+                    }}
+                    breakpoints={{
+                      320: {
+                        slidesPerView: "auto",
+                        spaceBetween: 20
+                      },
+                      480: {
+                        slidesPerView: "auto",
+                        spaceBetween: 25
+                      },
+                      768: {
+                        slidesPerView: "auto",
+                        spaceBetween: 30
+                      },
+                      1024: {
+                        slidesPerView: "auto",
+                        spaceBetween: 50
+                      }
+                    }}
+                    >
+                      {(isTotalEarning ? earnings.allBookings : earnings.sevenDaysBookings).map((booking) => (
+                          <SwiperSlide key={booking.id}  className={styles.swiper_slide}>
+                              <EarningCard
+                                  name={booking.yacht?.name || ''}
+                                  capacity={booking.totalAmount}
+                                  startingPrice={new Date(booking.createdAt).toLocaleDateString()}
+                                  imageUrl={booking.yacht?.images?.[0] || Y1}
+                                  yachtId={booking.yachtId}
+                                  isPrev={true}
+                                  isEarning={true}
+                              />
+                          </SwiperSlide>
+                      ))}
+                    </Swiper>
                     )}
                 </div>
             </div>

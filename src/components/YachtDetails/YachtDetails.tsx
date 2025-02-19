@@ -70,6 +70,8 @@ const Details: React.FC = () => {
         dispatch(setLoading(false));
         console.error("Error fetching yacht details:", error);
         setError("Failed to load yacht details");
+      } finally{
+        dispatch(setLoading(false));
       }
     };
 

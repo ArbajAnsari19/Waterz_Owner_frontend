@@ -7,12 +7,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useTopYachts } from "../../hooks/useTopYacht";
 import 'swiper/swiper-bundle.css';
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Discover: React.FC = () => {
-    const { yachts, loading } = useTopYachts();
+    const { yachts, error } = useTopYachts();
 
-    if (loading) {
-        return <div>Loading...</div>;
+    if (error) {
+      toast.error("Something Wrong Happened")
     }
 
     return(
@@ -54,6 +55,7 @@ const Discover: React.FC = () => {
                     <SwiperSlide key={yacht?._id}>
                       <YachtCard
                         key={yacht._id}
+                        // @ts-ignore
                         yacht={yacht}
                       />
                     </SwiperSlide>
