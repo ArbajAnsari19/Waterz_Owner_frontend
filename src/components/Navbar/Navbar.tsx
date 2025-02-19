@@ -1,76 +1,115 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "../../styles/Navbar/Navbar.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hook";
 import { setUserDetails, clearUserDetails } from "../../redux/slices/userSlice";
-
+import logo from "../../assets/Home/logo.png"
 const Navbar: React.FC = () => {
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const { isAuthenticated, userDetails } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector((state) => state.user);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const userData = localStorage.getItem('userData');
+  useEffect(() => {
+    // Check for token in localStorage when component mounts
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("userData");
 
-        if (token && userData) {
-            try {
-                const parsedUserData = JSON.parse(userData);
-                if (parsedUserData.role !== 'owner') {
-                    // If not an owner, clear auth and redirect to owner login
-                    handleLogout();
-                    return;
-                }
-                dispatch(setUserDetails({
-                    id: parsedUserData.id,
-                    email: parsedUserData.email,
-                    name: parsedUserData.name,
-                    role: parsedUserData.role
-                }));
-            } catch (error) {
-                console.error('Error parsing user data:', error);
-                handleLogout();
-            }
-        } else if (window.location.pathname !== '/login') {
-            // If no auth data and not on login page, redirect to login
-            navigate('/login');
-        }
-    }, [dispatch, navigate]);
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userData');
+    if (token && userData) {
+      try {
+        const parsedUserData = JSON.parse(userData);
+        dispatch(setUserDetails(parsedUserData));
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userData");
         dispatch(clearUserDetails());
-        navigate('/login');
+      }
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if click is outside both the menu and hamburger button
+      if (
+        menuRef.current && 
+        hamburgerRef.current && 
+        !menuRef.current.contains(event.target as Node) &&
+        !hamburgerRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
     };
 
-    return (
-        <div className={styles.comp_body}>
-            <div className={styles.content}>
-                <Link to="/">
-                    <div className={styles.item}>Home</div>
-                </Link>
-                
-                {isAuthenticated && userDetails.role === 'owner' ? (
-                    <>
-                        <Link to="/my-bookings">
-                            <div className={styles.item}>Bookings & Earnings</div>
-                        </Link>
-                        <Link to="/yatch-form">
-                            <div className={styles.item}>Charter</div>
-                        </Link>
-                        <Link to="/account">
-                            <div className={styles.item}>Account</div>
-                        </Link>
-                    </>
-                ) : (
-                    <Link to="/login">
-                        <div className={styles.item}>Login</div>
-                    </Link>
-                )}
-            </div>
+    // Add click event listener to the document
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Cleanup function to remove event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+
+  // Toggle menu for mobile
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
+
+  // Define the nav items for reuse in desktop and mobile
+  const navItems = (
+    <>
+      <Link to="/my-bookings" onClick={() => setMenuOpen(false)}>
+        <div className={styles.item}>Bookings & Earnings</div>
+      </Link>
+      <Link to="/yatch-form" onClick={() => setMenuOpen(false)}>
+        <div className={styles.item}>Charter</div>
+      </Link>
+      {isAuthenticated ? (
+        <div className={styles.account_section}>
+          <Link to="/account" onClick={() => setMenuOpen(false)}>
+            <div className={styles.item}>Account</div>
+          </Link>
         </div>
-    );
+      ) : (
+        <Link to="/signup" onClick={() => setMenuOpen(false)}>
+          <div className={styles.item}>SignUp</div>
+        </Link>
+      )}
+    </>
+  );
+
+  return (
+    <div className={styles.comp_body}>
+      <div className={styles.content}>
+        <div className={styles.brand}>
+          <Link to="/">
+            {/* <div className={styles.logobox}> */}
+                <img src={logo} width="100%" style={{paddingTop:"8px"}} />
+            {/* </div> */}
+          </Link>
+        </div>
+
+        {/* Desktop Navigation */}
+        <div className={styles.desktop_nav}>{navItems}</div>
+
+        {/* Hamburger icon for mobile */}
+        <div 
+          ref={hamburgerRef}
+          className={styles.hamburger} 
+          onClick={toggleMenu}
+        >
+          <span>&#9776;</span>
+        </div>
+      </div>
+
+      {/* Mobile Navigation Menu */}
+      {menuOpen && (
+        <div ref={menuRef} className={styles.mobile_menu}>
+          {navItems}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Navbar;

@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "../../styles/Home/Home.module.css"
 import hh3 from "../../assets/Home/hh3.svg";
-import event1 from "../../assets/Event/event1.svg"
 import 'swiper/swiper-bundle.css';
 import SolutionCard from "../Layouts/SolutionCard";
 import { Link } from "react-router-dom";
@@ -38,40 +37,6 @@ const solutionData = [
     subheading: "Access 24/7 customer support for any inquiries or assistance during your trip.",
   },
 ];
-
-const eventData = [
-  {
-    id: "event-1",
-    imgUrl: event1,
-    event: "Luxury Yacht Experience",
-  },
-  {
-    id: "event-2",
-    imgUrl: event1,
-    event: "Sunset Cruise Packages",
-  },
-  {
-    id: "event-3",
-    imgUrl: event1,
-    event: "Corporate Event Charters",
-  },
-  {
-    id: "event-4",
-    imgUrl: event1,
-    event: "Romantic Yacht Getaways",
-  },
-  {
-    id: "event-5",
-    imgUrl: event1,
-    event: "Adventure Tours",
-  },
-  {
-    id: "event-6",
-    imgUrl: event1,
-    event: "Custom Itinerary Voyages",
-  },
-];
-
   
 
 const Home: React.FC = () => {

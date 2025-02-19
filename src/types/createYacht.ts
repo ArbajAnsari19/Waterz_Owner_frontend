@@ -22,42 +22,46 @@ export interface Coordinates {
     sailing: number;  // Price per hour for sailing
     still: number;   // Price per hour when stationary
   }
+
+
+  interface AddonService {
+    service: string;
+    pricePerHour: number;
+  }
   
   // Main yacht creation interface
   export interface CreateYachtRequest {
-    // Basic information
-    name: string;                    // Name of the yacht
-    YachtType: string;              // Category (luxury, sport, fishing, sailing)
-    description: string;            // Brief description of the yacht
-    
-    // Location details
-    pickupat: string;              // Pickup location name
-    location: Coordinates;         // Geographical coordinates
-    
-    // Capacity and measurements
-    capacity: number;              // Maximum passenger capacity
-    crewCount: string;            // Number of crew members
-    crews?: CrewMember[];         // Optional crew details
-    
-    // Specifications
-    mnfyear?: number;             // Manufacturing year
-    dimensions: Dimensions;        // Length, width, height
-    dimension?: string;           // Combined dimensions string (e.g., "30x10x15")
-    
-    // Features and amenities
-    uniqueFeatures: string;       // Special features
-    amenities: string[];          // List of amenities
-    
-    // Pricing
-    price: YachtPricing;
-    
-    // Availability
-    availability: boolean;        // Whether the yacht is available
-    availabilityFrom: string;    // Start time of availability (ISO string)
-    availabilityTo: string;      // End time of availability (ISO string)
-    
-    // Media
-    images: string[];            // Array of image URLs
+    name: string;
+    pickupat: string;
+    location: string;
+    description: string;
+    // Updated pricing structure:
+    price: {
+      sailing: {
+        peakTime: number;
+        nonPeakTime: number;
+      };
+      anchoring: {
+        peakTime: number;
+        nonPeakTime: number;
+      };
+    };
+    availability: boolean;
+    amenities: string[];
+    capacity: number;
+    mnfyear?: number;
+    dimension?: string;
+    crews?: { name: string; role: string }[];
+    images: string[];
+    YachtType: string;
+    dimensions: string;
+    uniqueFeatures: string;
+    availabilityFrom: string;
+    availabilityTo: string;
+    crewCount: string;
+    // New fields:
+    addonServices: AddonService[];
+    packageTypes: string[];           // Array of image URLs
   }
   
   // API response interface

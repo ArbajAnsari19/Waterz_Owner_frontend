@@ -25,7 +25,7 @@ export const ownerAPI = {
     return response.data;
   },
 
-  getOwnerYachtDetail: async (yachtId: string): Promise<Yacht> => {
+  getOwnerYachtDetail: async (yachtId: string): Promise<CreateYachtRequest> => {
     const token = localStorage.getItem("token");
     const response = await apiClient.get(`${paths.ownerYachtDetail}/${yachtId}`, {
       headers: {

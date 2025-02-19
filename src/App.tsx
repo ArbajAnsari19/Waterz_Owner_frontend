@@ -49,6 +49,7 @@ import Review from './components/YachtDetails/YatchReview';
 import SignUp from './components/LoginSignup/SignUp';
 import Login from './components/LoginSignup/Login';
 import Account from './components/Account/Account';
+import BookingData from './components/Booking/BookingData';
 
 function App() {
   const location = useLocation();
@@ -64,6 +65,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<MainLayout><Home/></MainLayout>} />
         <Route path="/my-bookings" element={<MainLayout><Booking/></MainLayout>} />
+        <Route path="/booking/:id" element={<MainLayout><BookingData/></MainLayout>} />
         <Route path="/yatch-details/:id" element={<MainLayout><Details/></MainLayout>} />
         <Route path="/booking-details" element={<MainLayout><BookingDetails/></MainLayout>} />
         <Route path="/yatch-form" element={<MainLayout><YachtForm/></MainLayout>} />

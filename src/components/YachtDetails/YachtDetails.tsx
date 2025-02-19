@@ -3,24 +3,71 @@ import styles from "../../styles/YachtDetails/YachtDetails.module.css";
 import Y2 from "../../assets/Yatch/Y2.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ownerAPI } from "../../api/owner";
-import { Yacht } from "../../types/yachts";
+import { setLoading } from "../../redux/slices/loadingSlice";
+import { useAppDispatch } from "../../redux/store/hook";
+
+interface AddonService {
+  service: string;
+  pricePerHour: number;
+}
+
+interface YachtFormData {
+  name: string;
+  pickupat: string;
+  location: string;
+  description: string;
+  // Updated pricing structure:
+  price: {
+    sailing: {
+      peakTime: number;
+      nonPeakTime: number;
+    };
+    anchoring: {
+      peakTime: number;
+      nonPeakTime: number;
+    };
+  };
+  availability: boolean;
+  amenities: string[];
+  capacity: number;
+  mnfyear?: number;
+  dimension?: string;
+  crews?: { name: string; role: string }[];
+  images: string[];
+  YachtType: string;
+  dimensions: {
+    length: string;
+    width: string;
+    height: string;
+  };
+  uniqueFeatures: string;
+  availabilityFrom: string;
+  availabilityTo: string;
+  crewCount: string;
+  // New fields:
+  addonServices: AddonService[];
+  packageTypes: string[];
+}
 
 const Details: React.FC = () => {
-  const [yachtData, setYachtData] = useState<Yacht | null>(null);
+  const [yachtData, setYachtData] = useState<YachtFormData | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const yachtId = location.pathname.split("/")[2];
   const isPrev = location.state ? location.state.isPrev : false;
 
   useEffect(() => {
     const fetchYachtDetails = async () => {
       try {
+        dispatch(setLoading(true));
         const response = await ownerAPI.getOwnerYachtDetail(yachtId);
         // @ts-ignore
         setYachtData(response.yatch);
       } catch (error) {
+        dispatch(setLoading(false));
         console.error("Error fetching yacht details:", error);
         setError("Failed to load yacht details");
       }

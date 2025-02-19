@@ -17,7 +17,7 @@ interface SignupData {
 }
 
 interface OTPData {
-  otp: number;
+  otp: string;
 }
 
 interface EmailData {

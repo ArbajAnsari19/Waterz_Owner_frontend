@@ -9,6 +9,12 @@ import { useNavigate } from "react-router-dom";
 
 type ViewState = 'signup' | 'otp' | 'success';
 
+interface OTPData {
+  otp: string;
+  token: string;
+  role: string;
+}
+
 interface SignupData {
   name: string;
   email: string;
@@ -159,12 +165,19 @@ const SignUp: React.FC = () => {
     }
   };
 
-  const handleOTPVerify = async (otp: number) => {
+  const handleOTPVerify = async (otp: string) => {
     try {
       if (!formData || !signupToken) {
         throw new Error('Missing required data for verification');
       }
-      await authAPI.verifyOTP({ otp, token: signupToken, role: formData.role });
+
+      const otpData: OTPData = {
+        otp : otp,
+        token: signupToken,
+        role: formData.role
+      };otp
+
+      await authAPI.verifyOTP(otpData);
       setCurrentView('success');
     } catch (err: any) {
       throw err;
