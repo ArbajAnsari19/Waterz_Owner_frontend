@@ -11,7 +11,7 @@ interface LocationState {
 const Choose: React.FC = () => {
     const location = useLocation();
     const state = location.state as LocationState;
-    const { yachts: hookYachts, error } = useYachts();
+    const { yachts: hookYachts } = useYachts();
     
     console.log("state",state.yatches);
     // Use passed yachts if available, otherwise use hook data
