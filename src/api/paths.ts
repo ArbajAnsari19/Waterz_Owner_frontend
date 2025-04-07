@@ -16,7 +16,7 @@ export const paths = {
   googleAuth: `${userBaseURL}/google`,
   
   // User endpoints
-  getUserProfile: `${userBaseURL}/profile`,
+  getUserProfile: `${owner}/me`,
   updateUserProfile: `${userBaseURL}/profile/update`,
   
   // yacht
